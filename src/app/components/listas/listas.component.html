@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-white">
+                <div class="card-body">                   
+                    <input type="text" class="form-control add-task" placeholder="Nueva tarea.."
+                     [(ngModel)]="tituloTarea" (keyup.enter) = "addTarea()">               
+                        <div class="todo-list" *ngFor="let todo of todosFiltro()"> 
+                            <div class="todo-item-felt">
+                                <div class="todo-item">
+                                    <input type="checkbox" [(ngModel)]="todo.completado">
+                                    <div *ngIf="!todo.editado; else editardoTodo" 
+                                    class="todo-item-label" [ngClass]="{ 'completed' : todo.completado}" (dblclick)="editTarea(todo)"> {{ todo.tarea }}</div>
+                                    <ng-template #editardoTodo>
+                                        <input type="text" class="todo-item-edit" [(ngModel)] = "todo.tarea" (blur)="finEdit(todo)"
+                                        (keyup.enter)="finEdit(todo)" (keyup.escape)="cancelarEdit(todo)" autofocus>
+                                    </ng-template> 
+                                    <div type="button" class="close" aria-label="Close" (click)= "deleteTarea(todo.id)">
+                                    <span aria-hidden="true">&times;</span>
+                        </div>                                                        
+                    </div>
+                </div>
+            </div>
+                            <button class="btn fifth" [ngClass]="{'activo': filtro == 'todos'}" (click)="filtro='todos'">Todos</button>
+                            <button class="btn fifth" [ngClass]="{'activo': filtro == 'activos'}" (click)="filtro='activos'">Activos</button>
+                            <button class="btn fifth" [ngClass]="{'activo': filtro == 'completados'}" (click)="filtro='completados'">Completados</button>
+        </div>
+        
+    </div>
+</div>
+<div class="todo-footer"> {{total()}} Elementos Totales</div>
+<div class="todo-footer"> {{completados()}} Elementos Completados</div>
+<div class="todo-footer"> {{restantes()}} Elementos Restantes</div>
